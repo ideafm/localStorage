@@ -1,0 +1,10 @@
+.ls-wrapper {
+    background: lightgray;
+    padding: 20px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+}
+#input {
+    display: block;
+}
