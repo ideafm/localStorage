@@ -17,8 +17,18 @@ $(window).load(function(){
         };
 
         this.getList = function(){
-
+            if(!localStorage.getItem('ls')) return false;
+            str = localStorage.getItem('ls').split(',');
+            items = '';
+            for(var i = 0; i < str.length; i++){
+                items += '<li>' + localStorage.getItem(str[i]) + '</li>';
+            }
+            return items;
         };
+
+        this.update = function(key){
+            $('#all').append('<li>' + localStorage.getItem(key) + '</li>')
+        }
 
         this.addItem =  function(item){
             key = 'ls' + new Date().getTime();
@@ -29,15 +39,15 @@ $(window).load(function(){
             }else{
                 localStorage.setItem('ls', key);
             }
-
             localStorage.setItem(key, item);
-
+            self.update(key);
         };
 
         this.keyPress = function(e){
             if(e.which == 13){
                 if($.trim($('#input').val()) != ''){
-                    self.addItem($.trim($('#input').val()));
+                    self.addItem($.trim($(this).val()));
+                    $(this).val('');
                 }
             }
         };
@@ -45,7 +55,6 @@ $(window).load(function(){
         this.clear = function(){
             localStorage.clear();
         }
-
     }
 
     ls = new Ls();
