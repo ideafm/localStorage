@@ -8,3 +8,7 @@
 #input {
     display: block;
 }
+.tw-ls-remove {
+    display: block;
+    float: right;
+}

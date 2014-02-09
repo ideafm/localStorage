@@ -1,12 +1,12 @@
 $(window).load(function(){
-    ls.init();
+
 });
 
 (function($){
     function Ls() {
-        var items = [],
-            item,
-            strToArr,
+        var items,
+            elemIndex,
+            removeEl = '<a href="javascript: void(0)" class="tw-ls-remove">del</a>',
             sep = ',', str, key, self = this,
             temp = '<div class="ls-wrapper">Please type something here<input type="text" value="" id="input" placeholder="text here"/><ul id="all"></ul></div>';
 
@@ -14,21 +14,38 @@ $(window).load(function(){
             $('body').append(temp);
             $('#all').append(this.getList());
             $('#input').on('keypress', self.keyPress);
+            $('.tw-ls-remove').off('click').on('click', self.removeElement);
         };
+
+
 
         this.getList = function(){
             if(!localStorage.getItem('ls')) return false;
             str = localStorage.getItem('ls').split(',');
             items = '';
             for(var i = 0; i < str.length; i++){
-                items += '<li>' + localStorage.getItem(str[i]) + '</li>';
+                items += '<li>' + localStorage.getItem(str[i]) + removeEl + '</li>';
             }
             return items;
         };
 
+        this.removeElement = function(){
+            elemIndex = $(this).parent().index();
+            str = localStorage.getItem('ls').split(',');
+            localStorage.removeItem(str[elemIndex]);
+            str.splice(elemIndex, 1);
+            if(str.length == 0)
+                localStorage.removeItem('ls');
+            else
+                localStorage.setItem('ls', str.toString());
+            $(this).parent().remove();
+
+        };
+
         this.update = function(key){
-            $('#all').append('<li>' + localStorage.getItem(key) + '</li>')
-        }
+            $('#all').append('<li>' + localStorage.getItem(key) + removeEl + '</li>');
+            $('.tw-ls-remove').off('click').on('click', self.removeElement);
+        };
 
         this.addItem =  function(item){
             key = 'ls' + new Date().getTime();
@@ -54,7 +71,9 @@ $(window).load(function(){
 
         this.clear = function(){
             localStorage.clear();
-        }
+        };
+
+        this.init();
     }
 
     ls = new Ls();
