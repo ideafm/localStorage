@@ -2,6 +2,7 @@ $(window).load(function(){
 
 });
 
+// helpful comment, very helpful
 (function($){
     function Ls() {
         var items,
